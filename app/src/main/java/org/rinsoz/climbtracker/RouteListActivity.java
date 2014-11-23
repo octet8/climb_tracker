@@ -2,7 +2,9 @@ package org.rinsoz.climbtracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.app.Activity;
+
+import java.util.UUID;
 
 
 /**
@@ -21,7 +23,7 @@ import android.support.v4.app.FragmentActivity;
  * {@link RouteListFragment.Callbacks} interface
  * to listen for item selections.
  */
-public class RouteListActivity extends FragmentActivity
+public class RouteListActivity extends Activity
         implements RouteListFragment.Callbacks {
 
     /**
@@ -44,7 +46,7 @@ public class RouteListActivity extends FragmentActivity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((RouteListFragment) getSupportFragmentManager()
+            ((RouteListFragment) getFragmentManager()
                     .findFragmentById(R.id.route_list))
                     .setActivateOnItemClick(true);
         }
@@ -57,16 +59,13 @@ public class RouteListActivity extends FragmentActivity
      * indicating that the item with the given ID was selected.
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(UUID uuid) {
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(RouteDetailFragment.ARG_ITEM_ID, id);
-            RouteDetailFragment fragment = new RouteDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
+            RouteDetailFragment fragment = RouteDetailFragment.newInstance(uuid);
+            getFragmentManager().beginTransaction()
                     .replace(R.id.route_detail_container, fragment)
                     .commit();
 
@@ -74,7 +73,7 @@ public class RouteListActivity extends FragmentActivity
             // In single-pane mode, simply start the detail activity
             // for the selected item ID.
             Intent detailIntent = new Intent(this, RouteDetailActivity.class);
-            detailIntent.putExtra(RouteDetailFragment.ARG_ITEM_ID, id);
+            detailIntent.putExtra(RouteDetailFragment.EXTRA_ROUTE_ID, uuid);
             startActivity(detailIntent);
         }
     }

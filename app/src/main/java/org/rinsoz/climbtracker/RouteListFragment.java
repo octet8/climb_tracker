@@ -2,13 +2,15 @@ package org.rinsoz.climbtracker;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 
-import org.rinsoz.climbtracker.dummy.DummyContent;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * A list fragment representing a list of RouteList. This fragment
@@ -37,6 +39,7 @@ public class RouteListFragment extends ListFragment {
      * The current activated item position. Only used on tablets.
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
+    private ArrayList<Route> _routeList;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -47,7 +50,7 @@ public class RouteListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(String id);
+        public void onItemSelected(UUID uuid);
     }
 
     /**
@@ -56,7 +59,7 @@ public class RouteListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(UUID id) {
         }
     };
 
@@ -72,11 +75,12 @@ public class RouteListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+        _routeList = RouteStorage.get(getActivity()).getRouteList();
+        setListAdapter(new ArrayAdapter<Route>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                DummyContent.ITEMS));
+                _routeList));
     }
 
     @Override
@@ -116,7 +120,7 @@ public class RouteListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(_routeList.get(position).getId());
     }
 
     @Override

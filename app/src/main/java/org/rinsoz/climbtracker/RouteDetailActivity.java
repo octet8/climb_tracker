@@ -2,9 +2,11 @@ package org.rinsoz.climbtracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
+
+import java.util.UUID;
 
 
 /**
@@ -16,7 +18,7 @@ import android.view.MenuItem;
  * This activity is mostly just a 'shell' activity containing nothing
  * more than a {@link RouteDetailFragment}.
  */
-public class RouteDetailActivity extends ActionBarActivity {
+public class RouteDetailActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,7 @@ public class RouteDetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_route_detail);
 
         // Show the Up button in the action bar.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         // savedInstanceState is non-null when there is fragment state
         // saved from previous configurations of this activity
@@ -38,12 +40,9 @@ public class RouteDetailActivity extends ActionBarActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(RouteDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(RouteDetailFragment.ARG_ITEM_ID));
-            RouteDetailFragment fragment = new RouteDetailFragment();
-            fragment.setArguments(arguments);
-            getSupportFragmentManager().beginTransaction()
+            UUID uuid = (UUID)getIntent().getSerializableExtra(RouteDetailFragment.EXTRA_ROUTE_ID);
+            RouteDetailFragment fragment =  RouteDetailFragment.newInstance(uuid);
+            getFragmentManager().beginTransaction()
                     .add(R.id.route_detail_container, fragment)
                     .commit();
         }
