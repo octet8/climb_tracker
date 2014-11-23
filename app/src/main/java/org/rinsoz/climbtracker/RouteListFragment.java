@@ -3,10 +3,12 @@ package org.rinsoz.climbtracker;
 import android.app.Activity;
 import android.os.Bundle;
 import android.app.ListFragment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 
 
 import java.util.ArrayList;
@@ -33,12 +35,12 @@ public class RouteListFragment extends ListFragment {
      * The fragment's current callback object, which is notified of list item
      * clicks.
      */
-    private Callbacks mCallbacks = sDummyCallbacks;
+    private Callbacks _Callbacks = __DummyCallbacks;
 
     /**
      * The current activated item position. Only used on tablets.
      */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
+    private int _ActivatedPosition = ListView.INVALID_POSITION;
     private ArrayList<Route> _routeList;
 
     /**
@@ -57,7 +59,7 @@ public class RouteListFragment extends ListFragment {
      * A dummy implementation of the {@link Callbacks} interface that does
      * nothing. Used only when this fragment is not attached to an activity.
      */
-    private static Callbacks sDummyCallbacks = new Callbacks() {
+    private static Callbacks __DummyCallbacks = new Callbacks() {
         @Override
         public void onItemSelected(UUID id) {
         }
@@ -74,6 +76,7 @@ public class RouteListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
         // TODO: replace with a real list adapter.
         _routeList = RouteStorage.get(getActivity()).getRouteList();
         setListAdapter(new ArrayAdapter<Route>(
@@ -103,7 +106,7 @@ public class RouteListFragment extends ListFragment {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
         }
 
-        mCallbacks = (Callbacks) activity;
+        _Callbacks = (Callbacks) activity;
     }
 
     @Override
@@ -111,7 +114,7 @@ public class RouteListFragment extends ListFragment {
         super.onDetach();
 
         // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
+        _Callbacks = __DummyCallbacks;
     }
 
     @Override
@@ -120,15 +123,15 @@ public class RouteListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(_routeList.get(position).getId());
+        _Callbacks.onItemSelected(_routeList.get(position).getId());
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mActivatedPosition != ListView.INVALID_POSITION) {
+        if (_ActivatedPosition != ListView.INVALID_POSITION) {
             // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+            outState.putInt(STATE_ACTIVATED_POSITION, _ActivatedPosition);
         }
     }
 
@@ -146,11 +149,31 @@ public class RouteListFragment extends ListFragment {
 
     private void setActivatedPosition(int position) {
         if (position == ListView.INVALID_POSITION) {
-            getListView().setItemChecked(mActivatedPosition, false);
+            getListView().setItemChecked(_ActivatedPosition, false);
         } else {
             getListView().setItemChecked(position, true);
         }
 
-        mActivatedPosition = position;
+        _ActivatedPosition = position;
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.route_list_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_new_route:
+                Route route = new Route();
+                RouteStorage.get(getActivity()).addRoute(route);
+                _Callbacks.onItemSelected(route.getId());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

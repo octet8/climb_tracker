@@ -5,6 +5,8 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.UUID;
@@ -26,7 +28,7 @@ public class RouteDetailFragment extends Fragment {
     /**
      * The dummy content this fragment is presenting.
      */
-    private Route mItem;
+    private Route _route;
 
 
 
@@ -52,14 +54,14 @@ public class RouteDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         if (getArguments().containsKey(EXTRA_ROUTE_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
 
             UUID uuid = (UUID) getArguments().getSerializable(EXTRA_ROUTE_ID);
-            mItem = RouteStorage.get(getActivity()).getCrime(uuid);
+            _route = RouteStorage.get(getActivity()).getCrime(uuid);
         }
     }
 
@@ -69,8 +71,19 @@ public class RouteDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_route_detail, container, false);
 
         // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.route_detail)).setText(mItem.getTitle());
+        if (_route != null) {
+            ((TextView) rootView.findViewById(R.id.route_title)).setText(_route.getTitle());
+            ((TextView) rootView.findViewById(R.id.route_hint)).setText(_route.getHint());
+            ((TextView) rootView.findViewById(R.id.route_creator)).setText(_route.getCreator());
+            ((TextView) rootView.findViewById(R.id.route_personal_comment)).setText(_route.getPersonalComment());
+            Spinner quotation = (Spinner) rootView.findViewById(R.id.route_quotation);
+            quotation.set
+            Spinner color = (Spinner) rootView.findViewById(R.id.route_color);
+            Spinner progress = (Spinner) rootView.findViewById(R.id.route_progress);
+            CheckBox insecond = (CheckBox) rootView.findViewById(R.id.route_in_second);
+            insecond.setChecked(_route.inSecond());
+
+
         }
 
         return rootView;

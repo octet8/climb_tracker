@@ -41,7 +41,7 @@ public class RouteStorage {
         return null;
     }
 
-    public void addCrime(Route c) {
+    public void addRoute(Route c) {
         _routes.add(c);
         saveCrimes();
     }

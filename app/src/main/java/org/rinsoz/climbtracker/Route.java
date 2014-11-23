@@ -12,64 +12,78 @@ public class Route {
     private static final String JSON_DATE = "date";
     private static final String JSON_SOLVED = "solved";
 
-    private UUID mId;
-    private String mTitle;
-    private Date mDate;
-    private boolean mSolved;
+    private UUID _uuid;
+    private String _title;
+    private String _color;
+    private String _quotation;
+    private String _creator;
+    private String _hint;
+    private Date _creationDate;
+    private boolean _inSecond;
+    private RouteProgress _progress;
+    private Date _lastTryDate;
+    private String _personalComment;
 
     public Route() {
-        mId = UUID.randomUUID();
-        mDate = new Date();
+        _uuid = UUID.randomUUID();
+        _creationDate = new Date();
     }
 
     public Route(JSONObject json) throws JSONException {
-        mId = UUID.fromString(json.getString(JSON_ID));
-        mTitle = json.getString(JSON_TITLE);
-        mSolved = json.getBoolean(JSON_SOLVED);
-        mDate = new Date(json.getLong(JSON_DATE));
+        _uuid = UUID.fromString(json.getString(JSON_ID));
+        _title = json.getString(JSON_TITLE);
+        _inSecond = json.getBoolean(JSON_SOLVED);
+        _creationDate = new Date(json.getLong(JSON_DATE));
     }
 
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put(JSON_ID, mId.toString());
-        json.put(JSON_TITLE, mTitle);
-        json.put(JSON_DATE, mDate.getTime());
-        json.put(JSON_SOLVED, mSolved);
+        json.put(JSON_ID, _uuid.toString());
+        json.put(JSON_TITLE, _title);
+        json.put(JSON_DATE, _creationDate.getTime());
+        json.put(JSON_SOLVED, _inSecond);
         return json;
     }
 
     @Override
     public String toString() {
-        return mTitle;
+        return _title;
     }
 
     public String getTitle() {
-        return mTitle;
+        return _title;
     }
 
     public void setTitle(String title) {
-        mTitle = title;
+        _title = title;
     }
 
     public UUID getId() {
-        return mId;
+        return _uuid;
     }
 
-    public boolean isSolved() {
-        return mSolved;
+    public Date getCreationDate() {
+        return _creationDate;
     }
 
-    public void setSolved(boolean solved) {
-        mSolved = solved;
-    }
-
-    public Date getDate() {
-        return mDate;
-    }
-
-    public void setDate(Date date) {
-        mDate = date;
+    public void setCreationDate(Date creationDate) {
+        _creationDate = creationDate;
     }
 
 
+    public String getHint() {
+        return _hint;
+    }
+
+    public String getCreator() {
+        return _creator;
+    }
+
+    public String getPersonalComment() {
+        return _personalComment;
+    }
+
+    public boolean inSecond() {
+        return _inSecond;
+    }
 }

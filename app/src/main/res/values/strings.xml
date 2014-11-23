@@ -3,5 +3,17 @@
 
     <string name="app_name">Climb Tracker</string>
     <string name="title_route_detail">Route Detail</string>
+    <string name="new_route">New Route</string>
+    <string name="route_title_label">Title</string>
+    <string name="route_title_hint">Enter a title for this Route</string>
+    <string name="route_details_label">Details</string>
+    <string name="route_in_second_label">In second</string>
+    <string name="route_hint">Hint</string>
+    <string name="route_creator">Creator</string>
+    <string name="route_personal_comment">Personal comment</string>
+    <string name="route_progress">Progress</string>
+    <string name="route_hint_hint">Hint of the route</string>
+    <string name="route_creator_hint">Enter the name of the creator</string>
+    <string name="route_personal_comment_hint">Enter your personal comment</string>
 
 </resources>
