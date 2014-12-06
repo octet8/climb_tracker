@@ -15,5 +15,6 @@
     <string name="route_hint_hint">Hint of the route</string>
     <string name="route_creator_hint">Enter the name of the creator</string>
     <string name="route_personal_comment_hint">Enter your personal comment</string>
+    <string name="delete">Delete</string>
 
 </resources>

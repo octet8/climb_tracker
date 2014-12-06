@@ -16,9 +16,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 
-/**
- * Created by seb on 22.11.14.
- */
 public class RoutesJSONSerializer {
 
     private Context _context;
@@ -30,14 +27,14 @@ public class RoutesJSONSerializer {
     }
 
     public ArrayList<Route> loadCrimes() throws IOException, JSONException {
-        ArrayList<Route> routes = new ArrayList<Route>();
+        ArrayList<Route> routes = new ArrayList<>();
         BufferedReader reader = null;
         try {
             // open and read the file into a StringBuilder
             InputStream in = _context.openFileInput(_filename);
             reader = new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonString = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 // line breaks are omitted and irrelevant
                 jsonString.append(line);
@@ -58,20 +55,24 @@ public class RoutesJSONSerializer {
     }
 
     public void saveCrimes(ArrayList<Route> routes) throws JSONException, IOException {
-        // build an array in JSON
-        JSONArray array = new JSONArray();
-        for (Route r : routes)
-            array.put(r.toJSON());
-
+        String json_encoded = getJSON(routes);
         // write the file to disk
         Writer writer = null;
         try {
             OutputStream out = _context.openFileOutput(_filename, Context.MODE_PRIVATE);
             writer = new OutputStreamWriter(out);
-            writer.write(array.toString());
+            writer.write(json_encoded);
         } finally {
             if (writer != null)
                 writer.close();
         }
+    }
+
+    public String getJSON(ArrayList<Route> routes) throws JSONException {
+        // build an array in JSON
+        JSONArray array = new JSONArray();
+        for (Route r : routes)
+            array.put(r.toJSON());
+        return array.toString();
     }
 }

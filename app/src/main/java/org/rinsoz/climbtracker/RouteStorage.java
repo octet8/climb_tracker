@@ -17,11 +17,10 @@ public class RouteStorage {
 
     private RouteStorage(Context appContext) {
         _serializer = new RoutesJSONSerializer(appContext, FILENAME);
-
         try {
             _routes = _serializer.loadCrimes();
         } catch (Exception e) {
-            _routes = new ArrayList<Route>();
+            _routes = new ArrayList<>();
             Log.e(TAG, "Error loading crimes: ", e);
         }
     }
@@ -33,7 +32,7 @@ public class RouteStorage {
         return __routeStorage;
     }
 
-    public Route getCrime(UUID id) {
+    public Route getRoute(UUID id) {
         for (Route c : _routes) {
             if (c.getId().equals(id))
                 return c;
@@ -43,14 +42,14 @@ public class RouteStorage {
 
     public void addRoute(Route c) {
         _routes.add(c);
-        saveCrimes();
+        save();
     }
 
     public ArrayList<Route> getRouteList() {
         return _routes;
     }
 
-    public boolean saveCrimes() {
+    public boolean save() {
         try {
             _serializer.saveCrimes(_routes);
             Log.d(TAG, "crimes saved to file");
@@ -59,5 +58,21 @@ public class RouteStorage {
             Log.e(TAG, "Error saving crimes: " + e);
             return false;
         }
+    }
+
+    public  boolean export(){
+        try {
+            String json = _serializer.getJSON(_routes);
+            Log.d(TAG, "crimes saved to file");
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving crimes: " + e);
+            return false;
+        }
+    }
+
+    public void deleteRoute(Route route) {
+        _routes.remove(route);
+        save();
     }
 }

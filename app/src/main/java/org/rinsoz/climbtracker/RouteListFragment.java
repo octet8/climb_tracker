@@ -1,15 +1,20 @@
 package org.rinsoz.climbtracker;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.app.Fragment;
 import android.app.ListFragment;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -86,6 +91,17 @@ public class RouteListFragment extends ListFragment {
                 _routeList));
     }
 
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        if (rootView != null) {
+            View list = rootView.findViewById(android.R.id.list);
+            registerForContextMenu(list);
+        }
+        return rootView;
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -95,6 +111,7 @@ public class RouteListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
     }
 
     @Override
@@ -176,4 +193,35 @@ public class RouteListFragment extends ListFragment {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.route_list_context_menu, menu);
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = menuInfo.position;
+        ArrayAdapter adapter = (ArrayAdapter) getListAdapter();
+        Route route = (Route) adapter.getItem(position);
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.delete_route:
+                RouteStorage.get(getActivity()).deleteRoute(route);
+                adapter.notifyDataSetChanged();
+
+
+                return true;
+
+        }
+
+        return super.onContextItemSelected(item);
+    }
 }
+
