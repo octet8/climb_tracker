@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.UUID;
 
@@ -165,6 +166,7 @@ public class RouteDetailFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        RouteStorage.get(getActivity()).save();
+        if(!RouteStorage.get(getActivity()).save()){
+        }
     }
 }

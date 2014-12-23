@@ -33,8 +33,16 @@ public class Route {
 
     public Route() {
         _uuid = UUID.randomUUID();
+        _title = "";
+        _color = 0;
+        _grade = "";
+        _creator = "";
+        _hint = "";
         _creationDate = new Date();
+        _inSecond = false;
+        _progress = RouteProgress.NOT_TRY;
         _lastTryDate = new Date();
+        _personalComment = "";
     }
 
     public Route(JSONObject json) throws JSONException {

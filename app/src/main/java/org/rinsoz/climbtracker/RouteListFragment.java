@@ -3,6 +3,7 @@ package org.rinsoz.climbtracker;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.ContextMenu;
@@ -94,7 +95,13 @@ public class RouteListFragment extends ListFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+
+        View rootView;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            rootView = inflater.inflate(R.layout.fragment_route_list, container, false);
+        } else {
+            rootView = super.onCreateView(inflater, container, savedInstanceState);
+        }
         if (rootView != null) {
             View list = rootView.findViewById(android.R.id.list);
             registerForContextMenu(list);

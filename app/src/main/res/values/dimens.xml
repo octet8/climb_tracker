@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_size">30dp</dimen>
+    <dimen name="field_minHeight">48dp</dimen>
+    <dimen name="field_textSize">16sp</dimen>
 </resources>
