@@ -3,6 +3,7 @@ package org.rinsoz.climbtracker;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -99,6 +101,12 @@ public class RouteListFragment extends ListFragment {
         View rootView;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rootView = inflater.inflate(R.layout.fragment_route_list, container, false);
+
+            int diameter = getResources().getDimensionPixelSize(R.dimen.diameter);
+            Outline outline = new Outline();
+            outline.setOval(0, 0, diameter, diameter);
+            Button addButton = (Button) rootView.findViewById(R.id.add_button);
+            addButton.setClipToOutline(true);
         } else {
             rootView = super.onCreateView(inflater, container, savedInstanceState);
         }
